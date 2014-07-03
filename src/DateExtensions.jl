@@ -70,27 +70,15 @@ const HOLIDAYS = x->isnewyears(x) || isindependenceday(x) ||
                     ismartinlutherking(x) || ispresidentsday(x) ||
                     ismemorialday(x) || islaborday(x) ||
                     iscolumbusday(x) || isthanksgiving(x)
-const OBSERVEDHOLIDAYS = x->begin 
+const OBSERVEDHOLIDAYS = x->begin
     # If the holiday is on a weekday
-    if (isnewyears(x) || isindependenceday(x) ||
-       isveteransday(x) || ischristmas(x) ||
-       ismartinlutherking(x) || ispresidentsday(x) ||
-       ismemorialday(x) || islaborday(x) ||
-       iscolumbusday(x) || isthanksgiving(x)) && dayofweek(x) < 6
+    if HOLIDAYS(x) && dayofweek(x) < Saturday
         return true
     # Holiday is observed Monday if falls on Sunday
-    elseif dayofweek(x) == 1 && (isnewyears(x-Day(1)) || isindependenceday(x-Day(1)) ||
-       isveteransday(x-Day(1)) || ischristmas(x-Day(1)) ||
-       ismartinlutherking(x-Day(1)) || ispresidentsday(x-Day(1)) ||
-       ismemorialday(x-Day(1)) || islaborday(x-Day(1)) ||
-       iscolumbusday(x-Day(1)) || isthanksgiving(x-Day(1)))
+    elseif dayofweek(x) == 1 && HOLIDAYS(x-Day(1))
         return true
     # Holiday is observed Friday if falls on Saturday
-    elseif dayofweek(x) == 5 && (isnewyears(x+Day(1)) || isindependenceday(x+Day(1)) ||
-       isveteransday(x+Day(1)) || ischristmas(x+Day(1)) ||
-       ismartinlutherking(x+Day(1)) || ispresidentsday(x+Day(1)) ||
-       ismemorialday(x+Day(1)) || islaborday(x+Day(1)) ||
-       iscolumbusday(x+Day(1)) || isthanksgiving(x+Day(1)))
+    elseif dayofweek(x) == 5 && HOLIDAYS(x+Day(1))
         return true
     else
         return false
